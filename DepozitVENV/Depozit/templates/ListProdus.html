@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+
+<head>
+    <title>Produs_stoc</title>
+    <link rel="stylesheet" crossorigin="anonymous"
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css">
+
+    <script crossorigin="anonymous" src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js">
+    </script>
+</head>
+<div>
+    <form action="{% url 'ListProdus' %}" method="GET" class="form-inline">
+        <button type="submit" class="btn btn-primary my-1">Sortează</button>
+        <select name="sort_order" id="sort_order" class="custom-select my-1 mr-sm-2">
+            <option value="asc">Crescător</option>
+            <option value="desc">Descrescător</option>
+        </select>
+        <select name="sort_by" id="sort_by" class="custom-select my-1 mr-sm-2">
+            <option value="id_produs">id_produs</option>
+            <option value="id_firma">id_firma</option>
+            <option value="nume_produs">nume_produs</option>
+            <option value="nr_paleti">nr_paleti</option>
+            <option value="produse_per_palet">produse_per_palet</option>
+            <option value="tip_produs">tip_produs</option>
+            <option value="pret_produs">pret_produs</option>
+        </select>
+    </form>
+    <a class="btn btn-primary" href="{% url 'index' %}">Home</a>
+    <a class="btn btn-primary" href="{% url 'addProdus' %}">Adaugă Produs</a>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">id_produs_stoc</th>
+            <th scope="col">id_firma</th>
+            <th scope="col">nume_produs</th>
+            <th scope="col">nr_paleti</th>
+            <th scope="col">produse_per_palet</th>
+            <th scope="col">tip_produs</th>
+            <th scope="col">pret_produs</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for produs_stoc in produse_stoc %}
+        <tr>
+            <td>{{ produs_stoc.id_produs }}</td>
+            <td>{{ produs_stoc.id_firma }}</td>
+            <td>{{ produs_stoc.nume_produs }}</td>
+            <td>{{ produs_stoc.nr_paleti }}</td>
+            <td>{{ produs_stoc.produse_per_palet }}</td>
+            <td>{{ produs_stoc.tip_produs }}</td>
+            <td>{{ produs_stoc.pret_produs }}</td>
+            <td><a class="btn btn-primary" href='updateProdus/{{ produs_stoc.id_produs }}'>Edit</a></td>
+            <td><a class="btn btn-primary" href='deleteProdus/{{ produs_stoc.id_produs }}'>Delete</a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>

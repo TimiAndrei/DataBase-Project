@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+
+<head>
+    <title>Cerere 1</title>
+    <link rel="stylesheet" crossorigin="anonymous"
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css">
+
+    <script crossorigin="anonymous" src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js">
+    </script>
+</head>
+
+<div tyle="text-align: center;">
+    <h5>
+        Toate comenzile de depozitare care au adus produse de la firma cu id 2:
+    </h5>
+</div>
+<div>
+    <a class="btn btn-primary" href="{% url 'index' %}">Home</a>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">id_comanda</th>
+            <th scope="col">data_comanda</th>
+            <th scope="col">tip_comanda</th>
+            <th scope="col">id_firma</th>
+            <th scope="col">nume_firma</th>
+            <th scope="col">id_produs</th>
+            <th scope="col">nume_produs</th>
+            <th scope="col">nr_paleti</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for cerere in cereri %}
+        <tr>
+            <td>{{ cerere.id_comanda }}</td>
+            <td>{{ cerere.data_comanda }}</td>
+            <td>{{ cerere.tip_comanda }}</td>
+            <td>{{ cerere.id_firma }}</td>
+            <td>{{ cerere.nume_firma}}</td>
+            <td>{{ cerere.id_produs }}</td>
+            <td>{{ cerere.nume_produs }}</td>
+            <td>{{ cerere.nr_paleti }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>

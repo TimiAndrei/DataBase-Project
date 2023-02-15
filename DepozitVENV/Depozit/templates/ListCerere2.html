@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+
+<head>
+    <title>Cerere 2</title>
+    <link rel="stylesheet" crossorigin="anonymous"
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css">
+
+    <script crossorigin="anonymous" src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js">
+    </script>
+</head>
+
+<div tyle="text-align: center;">
+    <h5>
+        Numărul total de paleți, prețul mediu și numărul de produse pentru fiecare tip de produs al fiecărei firme:
+    </h5>
+    <p>
+        Cu condițiile: prețul mediu > 5 și nr_total_paleti > 100
+    </p>
+</div>
+<div>
+    <a class="btn btn-primary" href="{% url 'index' %}">Home</a>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">id_firma</th>
+            <th scope="col">nume_firma</th>
+            <th scope="col">tip_produs</th>
+            <th scope="col">nr_total_paleti</th>
+            <th scope="col">pret_mediu</th>
+            <th scope="col">nr_produse</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for cerere in cereri %}
+        <tr>
+            <td>{{ cerere.id_firma }}</td>
+            <td>{{ cerere.nume_firma }}</td>
+            <td>{{ cerere.tip_produs }}</td>
+            <td>{{ cerere.nr_total_paleti }}</td>
+            <td>{{ cerere.pret_mediu }}</td>
+            <td>{{ cerere.nr_produse }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>

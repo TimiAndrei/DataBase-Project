@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+
+<head>
+    <title>Detalii Program Tir</title>
+
+    <link rel="stylesheet" crossorigin="anonymous"
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css">
+
+    <script crossorigin="anonymous" src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js">
+    </script>
+</head>
+
+<body>
+    <h2>Detalii Program Tir</h2>
+
+    <form action="" method="POST">{% csrf_token %}
+
+        <div class="form-group row">
+            <label for="id_tir">id_tir</label>
+            <select name="id_tir" id="id_tir" class="form-control">
+                {% for tir in tirs %}
+                <option value="{{ tir.id_tir }}">{{ tir.id_tir }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group row">
+            <label for="id_poarta">id_poarta</label>
+            <select name="id_poarta" id="id_poarta" class="form-control">
+                {% for poarta in porti %}
+                <option value="{{ poarta.id_poarta }}">{{ poarta.id_poarta }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group row">
+            <label for="intrare">intrare</label>
+            <input type="text" class="form-control" name="intrare" id="intrare"
+                placeholder="DD-MMM-YYYY HH:MM:SS AM/PM">
+        </div>
+        <div class="form-group row">
+            <label for="iesire">iesire</label>
+            <input type="text" class="form-control" name="iesire" id="iesire" placeholder="DD-MMM-YYYY HH:MM:SS AM/PM">
+        </div>
+        <button type="btnAdd" class="btn btn-primary">Submit</button>
+        <a href="/Program_tir" class="btn btn-primary">Cancel</a>
+    </form>
+</body>

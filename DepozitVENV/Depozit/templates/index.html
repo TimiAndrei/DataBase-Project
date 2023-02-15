@@ -1,0 +1,85 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Listare Tabele Baza de date</title>
+
+    <link rel="stylesheet" crossorigin="anonymous"
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css">
+
+    <script crossorigin="anonymous" src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js">
+    </script>
+</head>
+
+<body>
+    <div style="text-align: center;">
+        <h1>Tabelele din baza de date:</h1>
+
+        <p>Apăsați pe buton pentru a vedea conținutul fiecărui tabel și pentru a modifica date:</p>
+    </div>
+
+    <div style="text-align: center;">
+        <p>
+            <a href="{% url 'TirList' %}" class="btn btn-primary">Tabelul Tir</a>
+        </p>
+        <p>
+            <a href="{% url 'JobList' %}" class="btn btn-primary">Tabelul Job</a>
+        </p>
+        <p>
+            <a href="{% url 'ListAngajat' %}" class="btn btn-primary">Tabelul Angajat</a>
+        </p>
+        <p>
+            <a href="{% url 'ListTura' %}" class="btn btn-primary">Tabelul Tura</a>
+        </p>
+        <p>
+            <a href="{% url 'ListPoarta' %}" class="btn btn-primary">Tabelul Poarta</a>
+        </p>
+        <p>
+            <a href="{% url 'ListComanda' %}" class="btn btn-primary">Tabelul Comanda</a>
+        </p>
+        <p>
+            <a href="{% url 'ListProdus' %}" class="btn btn-primary">Tabelul Produs_stoc</a>
+        </p>
+        <p>
+            <a href="{% url 'ListFirma' %}" class="btn btn-primary">Tabelul Firma</a>
+        </p>
+        <p>
+            <a href="{% url 'ListALTL' %}" class="btn btn-primary">Tabelul Angajat_lucreaza_tura_la_poarta</a>
+        </p>
+        <p>
+            <a href="{% url 'ListProgram_tir' %}" class="btn btn-primary">Tabelul Program_tir</a>
+        </p>
+        <p>
+            <a href="{% url 'ListTransport' %}" class="btn btn-primary">Tabelul Transport</a>
+        </p>
+        <p>
+            <a href="{% url 'ListProduse_comanda' %}" class="btn btn-primary">Tabelul Produse_comanda</a>
+        </p>
+        <h5>Afișarea rezultatului unei cereri care extrage informații din cel puțin 3 tabele şi le filtrează cu ajutorul
+            a cel puțin 2 condiții:</h5>
+        <p>
+        <p>
+            <a href="{% url 'ListCerere1' %}" class="btn btn-primary">Cerere 1</a>
+        </p>
+        <h5>
+            Afișarea rezultatului unei cereri care folosește funcții grup și o clauza having:
+        </h5>
+        <p>
+            <a href="{% url 'ListCerere2' %}" class="btn btn-primary">Cerere 2</a>
+        </p>
+        <h5>
+            Vizualizări
+        </h5>
+        <p>
+        <p>
+            <a href="{% url 'ListView1' %}" class="btn btn-primary">Vizualizare Compusă</a>
+        </p>
+        <p>
+            <a href="{% url 'ListView2' %}" class="btn btn-primary">Vizualizare Complexă</a>
+        </p>
+    </div>
+
+
+</body>
+
+</html>

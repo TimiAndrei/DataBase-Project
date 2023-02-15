@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+
+<head>
+    <title>Detalii noi Angajat</title>
+
+    <link rel="stylesheet" crossorigin="anonymous"
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css">
+
+    <script crossorigin="anonymous" src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js">
+    </script>
+
+</head>
+
+<body>
+    <h2>Detalii noi Angajat</h2>
+
+    <form action="" method="POST">{% csrf_token %}
+        <div class="form-group row">
+            <label for="nume">nume</label>
+            <input type="text" class="form-control" name="nume" id="nume" value="{{nume}}">
+        </div>
+        <div class="form-group row">
+            <label for="prenume">prenume</label>
+            <input type="text" class="form-control" name="prenume" id="prenume" value="{{prenume}}">
+        </div>
+        <div class="form-group row">
+            <label for="job">job</label>
+            <select name="job" id="job" class="form-control">
+                {% for job in jobs %}
+                {% if job.id_job == angajat.job %}
+                <option value="{{ job.id_job }}" selected>{{ job.denumire }}</option>
+                {% else %}
+                <option value="{{ job.id_job }}">{{ job.denumire }}</option>
+                {% endif %}
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group row">
+            <label for="nr_telefon">nr_telefon</label>
+            <input type="text" class="form-control" name="nr_telefon" id="nr_telefon" value="{{nr_telefon}}">
+        </div>
+        <div class="form-group row">
+            <label for="email">email</label>
+            <input type="text" class="form-control" name="email" id="email" value="{{email}}">
+        </div>
+
+        <button type="btnAdd" class="btn btn-primary">Submit</button>
+        <a href="/angajat" class="btn btn-primary">Cancel</a>
+    </form>
+</body>

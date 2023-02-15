@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+
+<head>
+    <title>Firma</title>
+    <link rel="stylesheet" crossorigin="anonymous"
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css">
+
+    <script crossorigin="anonymous" src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js">
+    </script>
+</head>
+<div>
+    <form action="{% url 'ListFirma' %}" method="GET" class="form-inline">
+        <button type="submit" class="btn btn-primary my-1">Sortează</button>
+        <select name="sort_order" id="sort_order" class="custom-select my-1 mr-sm-2">
+            <option value="asc">Crescător</option>
+            <option value="desc">Descrescător</option>
+        </select>
+        <select name="sort_by" id="sort_by" class="custom-select my-1 mr-sm-2">
+            <option value="id_firma">id_firma</option>
+            <option value="nume">nume</option>
+            <option value="data_semnare_contract">data_semnare_contract</option>
+            <option value="data_incheiere_contract">data_incheiere_contract</option>
+        </select>
+    </form>
+    <a class="btn btn-primary" href="{% url 'index' %}">Home</a>
+    <a class="btn btn-primary" href="{% url 'addFirma' %}">Adaugă Firmă</a>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">id_firma</th>
+            <th scope="col">nume</th>
+            <th scope="col">data_semnare_contract</th>
+            <th scope="col">data_incheiere_contract</th>
+            <th scope="col">email</th>
+            <th scope="col">contact_telefon</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for firma in firme %}
+        <tr>
+            <td>{{ firma.id_firma }}</td>
+            <td>{{ firma.nume }}</td>
+            <td>{{ firma.data_semnare_contract }}</td>
+            <td>{{ firma.data_incheiere_contract }}</td>
+            <td>{{ firma.email }}</td>
+            <td>{{ firma.contact_telefon }}</td>
+            <td><a class="btn btn-primary" href='updateFirma/{{ firma.id_firma }}'>Edit</a></td>
+            <td><a class="btn btn-primary" href='deleteFirma/{{ firma.id_firma }}'>Delete</a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
