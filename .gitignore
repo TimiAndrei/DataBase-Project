@@ -6,3 +6,4 @@ DepozitVENV/Scripts
 DepozitVENV/db.sqlite3
 DepozitVENV/pyvenv.cfg
 DepozitVENV/manage.py
+.env

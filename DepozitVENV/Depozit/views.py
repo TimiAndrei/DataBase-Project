@@ -19,13 +19,14 @@ from .forms import TransportForm
 from .forms import Produse_comandaForm
 import cx_Oracle
 import datetime
+import os
 from django.utils import timezone
 
 
 cx_Oracle.init_oracle_client(lib_dir=r"D:/Oracle_libraries/instantclient_21_8")
 
 def connection():
-    conn = cx_Oracle.connect(user='user', password='password', dsn="localhost/xepdb1")
+    conn = cx_Oracle.connect(user=os.environ.get('USER'), password=os.environ.get('PASSWORD'), dsn=os.environ.get('DSN'))
     return conn
 
 def index(request):
