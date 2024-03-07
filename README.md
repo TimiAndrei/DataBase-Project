@@ -16,6 +16,9 @@ This project is a comprehensive warehouse management solution built using the Dj
 
 This project, as a university milestone, demonstrates the synthesis of theoretical knowledge into a practical, functional solution for real-world challenges.
 
+**Conceptual Diagram**
+![Conceptual Diagram](https://github.com/TimiAndrei/DataBase-Project/blob/fe8b057e6639068130d7f0d088f222561f5ffc82/Conceptual%20Diagram.png)
+
 ## A short look at the web interface
 
 The web interface is not something complex, its scope is to communicate with the database and make CRUD operations easy for everyone.
