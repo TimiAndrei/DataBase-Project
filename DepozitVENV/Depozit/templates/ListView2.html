@@ -2,38 +2,48 @@
 <html lang="en-US" dir="ltr">
 
 <head>
-    <title>Vizualizare Complexa</title>
-    <link rel="stylesheet" crossorigin="anonymous"
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css">
-
-    <script crossorigin="anonymous" src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js">
-    </script>
+  <title>Vizualizare Complexa</title>
+  <link rel="stylesheet" href="https://bootswatch.com/5/darkly/bootstrap.min.css">
 </head>
-<div>
+
+<body>
+  {% include 'fragments/navbar.html' %}
+  <div>
     <h2>Vizualizare a numărului total de paleți și numărul total de produse pentru fiecare tip de produs al firmelor
     </h2>
     <a class="btn btn-primary" href="{% url 'index' %}">Home</a>
-</div>
+  </div>
 
-<table class="table">
+  <table class="table">
     <thead>
-        <tr>
-            <th scope="col">id_firma</th>
-            <th scope="col">Nume_Firma</th>
-            <th scope="col">tip_produs</th>
-            <th scope="col">Nr_total_paleti</th>
-            <th scope="col">Nr_produse</th>
-        </tr>
+      <tr>
+        <th scope="col">id_firma</th>
+        <th scope="col">Nume_Firma</th>
+        <th scope="col">tip_produs</th>
+        <th scope="col">Nr_total_paleti</th>
+        <th scope="col">Nr_produse</th>
+      </tr>
     </thead>
     <tbody>
-        {% for view in vizualizari %}
-        <tr>
-            <td>{{ view.id_firma }}</td>
-            <td>{{ view.Nume_Firma }}</td>
-            <td>{{ view.tip_produs }}</td>
-            <td>{{ view.Nr_total_paleti }}</td>
-            <td>{{ view.Nr_produse }}</td>
-        </tr>
-        {% endfor %}
+      {% for view in vizualizari %}
+      <tr>
+        <td>
+          {{ view.id_firma }}
+        </td>
+        <td>
+          {{ view.Nume_Firma }}
+        </td>
+        <td>
+          {{ view.tip_produs }}
+        </td>
+        <td>
+          {{ view.Nr_total_paleti }}
+        </td>
+        <td>
+          {{ view.Nr_produse }}
+        </td>
+      </tr>
+      {% endfor %}
     </tbody>
-</table>
+  </table>
+</body>

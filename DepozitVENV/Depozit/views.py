@@ -1,5 +1,8 @@
+from django.http import JsonResponse
+from django.template.loader import render_to_string
 from django.shortcuts import render, redirect
 from django.apps import apps
+from django.core.paginator import Paginator
 from .forms import TirForm
 from .forms import editTirForm
 from .forms import JobForm
@@ -21,6 +24,7 @@ import cx_Oracle
 import datetime
 import os
 from django.utils import timezone
+PER_PAGE = 10
 
 
 cx_Oracle.init_oracle_client(lib_dir=r"D:/Oracle_libraries/instantclient_21_8")
@@ -31,18 +35,55 @@ def connection():
 
 def index(request):
     return render(request, 'index.html')
+
+def calculate_total_pages(total_records, per_page):
+    return (total_records + per_page - 1) // per_page
 ############################################################################################
 def TirList(request):
-    tiruri = []
-    conn = connection()
-    cursor = conn.cursor()
     sort_by = request.GET.get('sort_by', 'id_tir')
     sort_order = request.GET.get('sort_order', 'asc')
-    cursor.execute("SELECT * FROM Tir ORDER BY %s %s" % (sort_by, sort_order))
+    page_number = request.GET.get('page', 1)
+    search_query = request.GET.get('search_query', '')
+    search_column = request.GET.get('search_column', 'nr_inmatriculare') 
+
+    if sort_order == 'ASC':
+        new_sort_order = 'DESC'
+    else:
+        new_sort_order = 'ASC'
+
+    conn = connection()
+    cursor = conn.cursor()
+    
+    search_sql = f"SELECT * FROM Tir WHERE LOWER({search_column}) LIKE LOWER(:search_query) ORDER BY {sort_by} {sort_order}"
+    cursor.execute(search_sql, {'search_query': f'%{search_query.lower()}%'})
+
+
+    tiruri = []
     for row in cursor.fetchall():
-        tiruri.append({"id_tir": row[0], "nr_inmatriculare": row[1], "nume_sofer": row[2], "prenume_sofer": row[3], "telefon_sofer": row[4]})
+        tiruri.append({
+            "id_tir": row[0],
+            "nr_inmatriculare": row[1],
+            "nume_sofer": row[2],
+            "prenume_sofer": row[3],
+            "telefon_sofer": row[4]
+        })
+
+    paginator = Paginator(tiruri, PER_PAGE)
+    page_obj = paginator.get_page(page_number)
+
     conn.close()
-    return render(request, 'TirList.html', {'tiruri':tiruri, 'sort_order': sort_order})
+    
+    search_columns =["id_tir", "nr_inmatriculare", "nume_sofer", "prenume_sofer", "telefon_sofer"]
+
+    return render(request, 'TirList.html', {
+            'tiruri': page_obj,
+            'sort_order': sort_order,
+            'sort_by': sort_by,
+            'search_columns': search_columns,
+            'search_query': search_query,
+            'search_column': search_column,
+            'new_sort_order': new_sort_order
+        })
 
 def addTir(request):
     if request.method == 'GET':

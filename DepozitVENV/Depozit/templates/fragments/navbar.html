@@ -1,0 +1,104 @@
+<!-- navbar.html -->
+{% with current_view=request.resolver_match.url_name %}
+<nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">DBWebApp</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarColor01">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item">
+          <a class="nav-link {% if current_view == 'index' %}active{% endif %}" href="{% url 'index' %}">Index</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if current_view == 'TirList' %}active{% endif %}" href="{% url 'TirList' %}">Tir</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if current_view == 'JobList' %}active{% endif %}" href="{% url 'JobList' %}">Job</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if current_view == 'ListAngajat' %}active{% endif %}" href="{% url 'ListAngajat' %}">Angajat</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if current_view == 'ListTura' %}active{% endif %}" href="{% url 'ListTura' %}">Tura</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if current_view == 'ListPoarta' %}active{% endif %}" href="{% url 'ListPoarta' %}">Poarta</a>
+
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if current_view == 'ListComanda' %}active{% endif %}" href="{% url 'ListComanda' %}">Comanda</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if current_view == 'ListProdus' %}active{% endif %}" href="{% url 'ListProdus' %}">Produs_stoc</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if current_view == 'ListFirma' %}active{% endif %}" href="{% url 'ListFirma' %}">Firma</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if current_view == 'ListALTL' %}active{% endif %}" href="{% url 'ListALTL' %}">Angajat_lucreaza</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if current_view == 'ListProgram_tir' %}active{% endif %}" href="{% url 'ListProgram_tir' %}">Program_tir</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if current_view == 'ListTransport' %}active{% endif %}" href="{% url 'ListTransport' %}">Transport</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if current_view == 'ListProduse_comanda' %}active{% endif %}" href="{% url 'ListProduse_comanda' %}">Produse_comanda</a>
+        </li>
+      </ul>
+
+      <form class="d-flex ml-2" id="searchForm">
+        <input class="form-control me-sm-2" type="search" placeholder="Search by..." id="searchInput" style="width:10vw;">
+      </form>
+      <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="searchButton" data-bs-toggle="dropdown" aria-expanded="false" style="width:12vw;">
+          Select column
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="searchButton">
+          {% for column in search_columns %}
+          <li><a class="dropdown-item" href="#" data-value="{{ column }}">
+              {{ column }}</a></li>
+          {% endfor %}
+        </ul>
+      </div>
+
+      <script>
+        // Update dropdown toggle button text when an option is selected
+        document.querySelectorAll('.dropdown-item').forEach(item => {
+          item.addEventListener('click', function() {
+            document.getElementById('searchButton').innerText = this.innerText;
+          });
+        });
+      </script>
+
+
+    </div>
+  </div>
+</nav>
+{% endwith %}
+
+{% if messages %}
+<div class="messages">
+  {% for message in messages %}
+  <div class="{% if message.tags %}alert alert-{{ message.tags }}{% endif %}">
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    {{ message }}
+  </div>
+  {% endfor %}
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(function() {
+      var messagesDiv = document.querySelector('.messages');
+      if (messagesDiv) {
+        messagesDiv.style.display = 'none';
+      }
+    }, 3000);
+  });
+</script>
+
+{% endif %}
