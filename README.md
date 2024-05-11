@@ -21,9 +21,10 @@ This project, as a university milestone, demonstrates the synthesis of theoretic
 
 ## A short look at the web interface
 
-The web interface is not something complex, its scope is to communicate with the database and make CRUD operations easy for everyone.
-The landing page is a list of buttons to access each table of the database.
-![Landing Page](https://github.com/TimiAndrei/DataBase-Project/blob/7c5a973e9428d79271ce71522227209482165799/Preview/LandingPage.png)
+The web interface has been refactored to implement a new design that is more user-friendly and intuitive, as well as new features that improve the user experience like paginating the table results, sorting by clicking the column name and real-time search.
 
-After clicking one of the buttons you will be redirected to the specific table page that looks like this:
+The landing page describes briefly the purpose of the app and shows the conceptual diagram for the database.
+![Landing Page](https://github.com/TimiAndrei/DataBase-Project/blob/3f3a400fe56f407a0f71c07f7f8e18d749d3b22f/Preview/NewLandingPage.png)
+
+After clicking one of the navbar buttons you will be redirected to the specific table page that looks like this:
 ![Table View](https://github.com/TimiAndrei/DataBase-Project/blob/7c5a973e9428d79271ce71522227209482165799/Preview/TableView.png)
