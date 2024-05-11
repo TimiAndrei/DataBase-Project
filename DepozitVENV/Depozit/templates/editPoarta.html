@@ -8,27 +8,35 @@
 
 <body>
   {% include 'fragments/navbar.html' %}
-  <h2>Detalii noi Poartă</h2>
-
-  <form action="{% url 'updatePoarta' poarta.id_poarta %}" method="POST">{% csrf_token %}
-    <div class="form-group row">
-      <label for="stare_poarta">stare_poarta</label>
-      <select name="stare_poarta" id="stare_poarta" class="form-control">
-        {% for op in opt %}
-        {% if op == stare_poarta %}
-        <option value="{{ op }}" selected>
-          {{ op }}
-        </option>
-        {% else %}
-        <option value="{{ op }}">
-          {{ op }}
-        </option>
-        {% endif %}>
-        {% endfor %}
-      </select>
+  <br><br>
+  <div class="container d-flex justify-content-center">
+    <div class="card text-white bg-primary mb-3" style="width: 30rem;">
+      <div class="card-header">Detalii noi Poartă</div>
+      <div class="card-body">
+        <form action="{% url 'updatePoarta' poarta.id_poarta %}" method="POST">
+          {% csrf_token %}
+          <div class="mb-3">
+            <label for="stare_poarta" class="form-label">stare_poarta</label>
+            <select name="stare_poarta" id="stare_poarta" class="form-control">
+              {% for op in opt %}
+              {% if op == stare_poarta %}
+              <option value="{{ op }}" selected>
+                {{ op }}
+              </option>
+              {% else %}
+              <option value="{{ op }}">
+                {{ op }}
+              </option>
+              {% endif %}
+              {% endfor %}
+            </select>
+          </div>
+          <button type="submit" class="btn btn-success">Submit</button>
+          &nbsp;
+          <a href="/poarta" class="btn btn-secondary">Cancel</a>
+        </form>
+      </div>
     </div>
+  </div>
 
-    <button type="btnAdd" class="btn btn-primary">Submit</button>
-    <a href="/poarta" class="btn btn-primary">Cancel</a>
-  </form>
 </body>

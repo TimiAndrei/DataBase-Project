@@ -8,49 +8,98 @@
 
 <body>
   {% include 'fragments/navbar.html' %}
-  <div style="text-align: center;">
-    <h1>Dacă ștergeți Jobul, următorii angajați vor fi concediați și șterși din baza de date:</h1>
+  <br>
+  <div style="text-align: center;" class="container">
+    <h3>If you delete this job, the following employees will be deleted as well:</h3>
   </div>
+  <br>
+
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col">
+        <table class="table" id="ListAngajat">
+          <thead>
+            <tr>
+              <th scope="col">id_angajat</th>
+              <th scope="col">nume</th>
+              <th scope="col">prenume</th>
+              <th scope="col">job</th>
+              <th scope="col">nr_telefon</th>
+              <th scope="col">email</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for angajat in angajati %}
+            <tr>
+              <td>
+                {{ angajat.id_angajat }}
+              </td>
+              <td>
+                {{ angajat.nume }}
+              </td>
+              <td>
+                {{ angajat.prenume }}
+              </td>
+              <td>
+                {{ angajat.job }}
+              </td>
+              <td>
+                {{ angajat.nr_telefon }}
+              </td>
+              <td>
+                {{ angajat.email }}
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  {% load pagination_tags %}
+
+  {% render_pagination angajati request %}
+
+  <div class="container">
+    <form action="" method="POST">{% csrf_token %}
+      <button type="btnAdd" class="btn btn-danger">Delete</button>
+      &nbsp;
+      <a href="/job" class="btn btn-success">Cancel</a>
+    </form>
+  </div>
+
 </body>
+<script>
+  $(document).ready(function() {
+    $("#searchInput").on("input", function() {
+      performSearch();
+    });
 
-<table class="table">
-  <thead>
-    <tr>
-      <th scope="col">id_angajat</th>
-      <th scope="col">nume</th>
-      <th scope="col">prenume</th>
-      <th scope="col">job</th>
-      <th scope="col">nr_telefon</th>
-      <th scope="col">email</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for angajat in angajati %}
-    <tr>
-      <td>
-        {{ angajat.id_angajat }}
-      </td>
-      <td>
-        {{ angajat.nume }}
-      </td>
-      <td>
-        {{ angajat.prenume }}
-      </td>
-      <td>
-        {{ angajat.job }}
-      </td>
-      <td>
-        {{ angajat.nr_telefon }}
-      </td>
-      <td>
-        {{ angajat.email }}
-      </td>
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
 
-<form action="" method="POST">{% csrf_token %}
-  <button type="btnAdd" class="btn btn-primary">Submit</button>
-  <a href="/job" class="btn btn-primary">Cancel</a>
-</form>
+    function performSearch() {
+      var searchQuery = $("#searchInput").val();
+      if ($("#searchButton").text().trim() == "Select column") {
+        var searchColumn = "prenume";
+      } else {
+        var searchColumn = $("#searchButton").text().trim();
+      }
+
+      $.ajax({
+        type: "GET",
+        url: "/angajat/",
+        data: {
+          search_query: searchQuery,
+          sort_by: "{{ sort_by }}",
+          sort_order: "{{ sort_order }}",
+          search_column: searchColumn,
+        },
+        success: function(data) {
+          $(".table").html($(data).find(".table").html());
+        },
+        error: function(error) {
+          console.log(error);
+        },
+      });
+    }
+  });
+</script>

@@ -1,0 +1,78 @@
+table#TirList th:first-child {
+  width: 7%;
+}
+
+table#TirList th {
+  width: 15%;
+}
+
+table#JobList th:first-child {
+  width: 10%;
+}
+
+table#JobList th {
+  width: 20%;
+}
+
+table#ListAngajat th:first-child {
+  width: 10%;
+}
+
+table#ListAngajat th {
+  width: 15%;
+}
+
+table#ListProdus th:first-child {
+  width: 10%;
+}
+
+table#ListProdus th:nth-child(2) {
+  width: 10%;
+}
+table#ListProdus th:nth-child(3) {
+  width: 20%;
+}
+
+table#ListProdus th {
+  width: 15%;
+}
+
+table#ListFirma th:first-child {
+  width: 8%;
+}
+
+table#ListFirma th:nth-child(2) {
+  width: 8%;
+}
+
+table#ListFirma th:nth-child(3) {
+  width: 18%;
+}
+
+table#ListFirma th:nth-child(5) {
+  width: 18%;
+}
+
+table#ListFirma th:nth-child(7) {
+  width: 5%;
+}
+
+table#ListFirma th {
+  width: 15%;
+}
+
+table#ListALTL th {
+  width: 15%;
+}
+
+table#ProgramList th {
+  width: 10%;
+}
+
+table#ListTransport th {
+  width: 30%;
+}
+
+table#ListProduse_comanda th {
+  width: 25%;
+}

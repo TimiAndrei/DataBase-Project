@@ -8,22 +8,30 @@
 
 <body>
   {% include 'fragments/navbar.html' %}
-  <h2>Detalii Job</h2>
-
-  <form action="" method="POST">{% csrf_token %}
-    <div class="form-group row">
-      <label for="id_job">id_job</label>
-      <input type="text" class="form-control" name="id_job" id="id_job">
+  <br><br>
+  <div class="container d-flex justify-content-center">
+    <div class="card text-white bg-primary mb-3" style="width: 30rem;">
+      <div class="card-header">Detalii Job</div>
+      <div class="card-body">
+        <form action="" method="POST">
+          {% csrf_token %}
+          <div class="mb-3">
+            <label for="id_job" class="form-label">id_job</label>
+            <input type="text" class="form-control" name="id_job" id="id_job">
+          </div>
+          <div class="mb-3">
+            <label for="denumire" class="form-label">denumire</label>
+            <input type="text" class="form-control" name="denumire" id="denumire">
+          </div>
+          <div class="mb-3">
+            <label for="salariu" class="form-label">salariu</label>
+            <input type="text" class="form-control" name="salariu" id="salariu">
+          </div>
+          <button type="submit" class="btn btn-success">Submit</button>
+          &nbsp;
+          <a href="/job" class="btn btn-secondary">Cancel</a>
+        </form>
+      </div>
     </div>
-    <div class="form-group row">
-      <label for="denumire">denumire</label>
-      <input type="text" class="form-control" name="denumire" id="denumire">
-    </div>
-    <div class="form-group row">
-      <label for="salariu">salariu</label>
-      <input type="text" class="form-control" name="salariu" id="salariu">
-    </div>
-    <button type="btnAdd" class="btn btn-primary">Submit</button>
-    <a href="/job" class="btn btn-primary">Cancel</a>
-  </form>
+  </div>
 </body>

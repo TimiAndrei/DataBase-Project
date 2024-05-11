@@ -14,61 +14,61 @@
   <div class="container">
     <div class="row justify-content-center">
       <div class="col">
-        <table class="table">
+        <table class="table" id="TirList">
           <thead>
             <tr>
               <th scope="col">
-                <a href="{% url 'TirList' %}?sort_by=id_tir&sort_order={{ new_sort_order }}&search_query={{ search_query }}&search_column={{ search_column }}" class="text-decoration-none text-white">
+                <a href="{% url 'TirList' %}?sort_by=id_tir&sort_order={{ new_sort_order }}" class="text-decoration-none text-white">
                   id_tir
                   {% if sort_by == 'id_tir' %}
-                  {% if sort_order == 'ASC' %}
-                  {{ '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16"><path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/></svg>' | safe }}
+                  {% if sort_order == 'DESC' %}
+                  {{ caret_up_svg | safe }}
                   {% else %}
-                  {{ '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-up-fill" viewBox="0 0 16 16"><path d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z"/></svg>' | safe }}
+                  {{ caret_down_svg | safe }}
                   {% endif %}
                   {% endif %}
                 </a>
               </th>
               <th scope="col">
-                <a href="{% url 'TirList' %}?sort_by=nr_inmatriculare&sort_order={{ new_sort_order }}&search_query={{ search_query }}&search_column={{ search_column }}" class="text-decoration-none text-white">
+                <a href="{% url 'TirList' %}?sort_by=nr_inmatriculare&sort_order={{ new_sort_order }}" class="text-decoration-none text-white">
                   nr_inmatriculare
                   {% if sort_by == 'nr_inmatriculare' %}
-                  {% if sort_order == 'ASC' %}
-                  {{ '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16"><path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/></svg>' | safe }}
+                  {% if sort_order == 'DESC' %}
+                  {{ caret_up_svg | safe }}
                   {% else %}
-                  {{ '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-up-fill" viewBox="0 0 16 16"><path d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z"/></svg>' | safe }}
+                  {{ caret_down_svg | safe }}
                   {% endif %}
                   {% endif %}
                 </a>
               </th>
               <th scope="col">
-                <a href="{% url 'TirList' %}?sort_by=nume_sofer&sort_order={{ new_sort_order }}&search_query={{ search_query }}&search_column={{ search_column }}" class="text-decoration-none text-white">
+                <a href="{% url 'TirList' %}?sort_by=nume_sofer&sort_order={{ new_sort_order }}" class="text-decoration-none text-white">
                   nume_sofer
                   {% if sort_by == 'nume_sofer' %}
-                  {% if sort_order == 'ASC' %}
-                  {{ '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16"><path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/></svg>' | safe }}
+                  {% if sort_order == 'DESC' %}
+                  {{ caret_up_svg | safe }}
                   {% else %}
-                  {{ '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-up-fill" viewBox="0 0 16 16"><path d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z"/></svg>' | safe }}
+                  {{ caret_down_svg | safe }}
                   {% endif %}
                   {% endif %}
                 </a>
               </th>
               <th scope="col">
-                <a href="{% url 'TirList' %}?sort_by=prenume_sofer&sort_order={{ new_sort_order }}&search_query={{ search_query }}&search_column={{ search_column }}" class="text-decoration-none text-white">
+                <a href="{% url 'TirList' %}?sort_by=prenume_sofer&sort_order={{ new_sort_order }}" class="text-decoration-none text-white">
                   prenume_sofer
                   {% if sort_by == 'prenume_sofer' %}
-                  {% if sort_order == 'ASC' %}
-                  {{ '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16"><path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/></svg>' | safe }}
+                  {% if sort_order == 'DESC' %}
+                  {{ caret_up_svg | safe }}
                   {% else %}
-                  {{ '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-up-fill" viewBox="0 0 16 16"><path d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z"/></svg>' | safe }}
+                  {{ caret_down_svg | safe }}
                   {% endif %}
                   {% endif %}
                 </a>
               </th>
               <th scope="col">telefon_sofer</th>
               <th scope="col" colspan="2">
-                <div class="d-inline-block" style="margin-left:15%;">
-                  <a class="btn btn-primary btn-sm" href="{% url 'addTir' %}">Adaugă Tir</a>
+                <div class="d-inline-block" style="margin-left:18%;">
+                  <a class="btn btn-primary btn-sm" href="{% url 'addTir' %}">Add Tir</a>
                 </div>
               </th>
             </tr>
@@ -99,45 +99,44 @@
         </table>
       </div>
     </div>
-
   </div>
 
   {% load pagination_tags %}
 
   {% render_pagination tiruri request %}
 
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-  <script>
-    $(document).ready(function() {
-      $('#searchInput').on('input', function() {
-        performSearch();
-      });
-
-      $('#searchButton').on('click', '.dropdown-item', function() {
-        performSearch();
-      });
-
-      function performSearch() {
-        var searchQuery = $('#searchInput').val();
-        var searchColumn = $('#searchButton').text().trim();
-        $.ajax({
-          type: 'GET',
-          url: '/tir/',
-          data: {
-            'search_query': searchQuery,
-            'sort_by': '{{ sort_by }}',
-            'sort_order': '{{ sort_order }}',
-            'search_column': searchColumn
-          },
-          success: function(data) {
-            $('.table').html($(data).find('.table').html());
-          },
-          error: function(error) {
-            console.log(error);
-          }
-        });
-      }
-    });
-  </script>
 </body>
+<script>
+  $(document).ready(function() {
+    $("#searchInput").on("input", function() {
+      performSearch();
+    });
+
+
+    function performSearch() {
+      var searchQuery = $("#searchInput").val();
+      if ($("#searchButton").text().trim() == "Select column") {
+        var searchColumn = "nr_inmatriculare";
+      } else {
+        var searchColumn = $("#searchButton").text().trim();
+      }
+
+      $.ajax({
+        type: "GET",
+        url: "/tir/",
+        data: {
+          search_query: searchQuery,
+          sort_by: "{{ sort_by }}",
+          sort_order: "{{ sort_order }}",
+          search_column: searchColumn,
+        },
+        success: function(data) {
+          $(".table").html($(data).find(".table").html());
+        },
+        error: function(error) {
+          console.log(error);
+        },
+      });
+    }
+  });
+</script>

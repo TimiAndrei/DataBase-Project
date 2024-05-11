@@ -7,44 +7,57 @@
 
 <body>
   {% include 'fragments/navbar.html' %}
-  <h2>Detalii Tabel</h2>
+  <br><br>
+  <div class="container d-flex justify-content-center">
+    <div class="card text-white bg-primary mb-3" style="width: 30rem;">
+      <div class="card-header">Detalii Tabel</div>
+      <div class="card-body">
+        <form action="" method="POST">
+          {% csrf_token %}
+          <div class="mb-3">
+            <label for="id_poarta" class="form-label">id_poarta</label>
+            <select name="id_poarta" id="id_poarta" class="form-control">
+              {% for poarta in porti %}
+              <option value="{{ poarta.id_poarta }}">
+                {{ poarta.id_poarta }}
+              </option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="id_angajat" class="form-label">id_angajat (Nume)</label>
+            <select name="id_angajat" id="id_angajat" class="form-control">
+              {% for angajat in angajati %}
+              <option value="{{ angajat.id_angajat }}">
+                {{ angajat.id_angajat }}
+                {{ angajat.nume }}
+                {{ angajat.prenume }}
+              </option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="id_tura" class="form-label">id_tura si interval orar</label>
+            <select name="id_tura" id="id_tura" class="form-control">
+              {% for tura in ture %}
+              <option value="{{ tura.id_tura }}">
+                {{ tura.id_tura }}
+                {{ tura.ora_incepere }}
+                {{ tura.ora_sfarsit }}
+              </option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="data" class="form-label">data</label>
+            <input type="text" class="form-control" placeholder="DD-MMM-YYYY" name="data" id="data">
+          </div>
+          <button type="submit" class="btn btn-success">Submit</button>
+          &nbsp;
+          <a href="/ALTL" class="btn btn-secondary">Cancel</a>
+        </form>
+      </div>
+    </div>
+  </div>
 
-  <form action="" method="POST">{% csrf_token %}
-    <div class="form-group row">
-      <label for="id_poarta">id_poarta</label>
-      <select name="id_poarta" id="id_poarta" class="form-control">
-        {% for poarta in porti %}
-        <option value="{{ poarta.id_poarta }}">
-          {{ poarta.id_poarta }}
-        </option>
-        {% endfor %}
-      </select>
-    </div>
-    <div class="form-group row">
-      <label for="id_angajat">id_angajat (Nume)</label>
-      <select name="id_angajat" id="id_angajat" class="form-control">
-        {% for angajat in angajati %}
-        <option value="{{ angajat.id_angajat }}">{{angajat.id_angajat}}
-          {{ angajat.nume }} {{angajat.prenume}}
-        </option>
-        {% endfor %}
-      </select>
-    </div>
-    <div class="form-group row">
-      <label for="id_tura">id_tura si interval orar</label>
-      <select name="id_tura" id="id_tura" class="form-control">
-        {% for tura in ture %}
-        <option value="{{ tura.id_tura }}">
-          {{ tura.id_tura }} {{tura.ora_incepere}} {{tura.ora_sfarsit}}
-        </option>
-        {% endfor %}
-      </select>
-    </div>
-    <div class="form-group row">
-      <label for="data">data</label>
-      <input type="text" class="form-control" placeholder="DD-MMM-YYYY" name="data" id="data">
-    </div>
-    <button type="btnAdd" class="btn btn-primary">Submit</button>
-    <a href="/ALTL" class="btn btn-primary">Cancel</a>
-  </form>
 </body>

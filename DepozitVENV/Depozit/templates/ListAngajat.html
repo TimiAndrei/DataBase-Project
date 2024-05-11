@@ -4,66 +4,142 @@
 <head>
   <title>Angajat</title>
   <link rel="stylesheet" href="https://bootswatch.com/5/darkly/bootstrap.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 
 <body>
   {% include 'fragments/navbar.html' %}
-  <div>
-    <form action="{% url 'ListAngajat' %}" method="GET" class="form-inline">
-      <button type="submit" class="btn btn-primary my-1">Sortează</button>
-      <select name="sort_order" id="sort_order" class="custom-select my-1 mr-sm-2">
-        <option value="asc">Crescător</option>
-        <option value="desc">Descrescător</option>
-      </select>
-      <select name="sort_by" id="sort_by" class="custom-select my-1 mr-sm-2">
-        <option value="id_angajat">id_angajat</option>
-        <option value="nume">nume</option>
-        <option value="prenume">prenume</option>
-        <option value="job">job</option>
-      </select>
-    </form>
-    <a class="btn btn-primary" href="{% url 'index' %}">Home</a>
-    <a class="btn btn-primary" href="{% url 'addAngajat' %}">Adaugă Angajat</a>
-  </div>
+  <br>
 
-  <table class="table">
-    <thead>
-      <tr>
-        <th scope="col">id_angajat</th>
-        <th scope="col">nume</th>
-        <th scope="col">prenume</th>
-        <th scope="col">job</th>
-        <th scope="col">nr_telefon</th>
-        <th scope="col">email</th>
-        <th scope="col"></th>
-        <th scope="col"></th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for angajat in angajati %}
-      <tr>
-        <td>
-          {{ angajat.id_angajat }}
-        </td>
-        <td>
-          {{ angajat.nume }}
-        </td>
-        <td>
-          {{ angajat.prenume }}
-        </td>
-        <td>
-          {{ angajat.job }}
-        </td>
-        <td>
-          {{ angajat.nr_telefon }}
-        </td>
-        <td>
-          {{ angajat.email }}
-        </td>
-        <td><a class="btn btn-primary" href='updateAngajat/{{ angajat.id_angajat }}'>Edit</a></td>
-        <td><a class="btn btn-primary" href='deleteAngajat/{{ angajat.id_angajat }}'>Delete</a></td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col">
+        <table class="table" id="ListAngajat">
+          <thead>
+            <tr>
+              <th scope="col">
+                <a href="{% url 'ListAngajat' %}?sort_by=id_angajat&sort_order={{ new_sort_order }}" class="text-decoration-none text-white">
+                  id_angajat
+                  {% if sort_by == 'id_angajat' %}
+                  {% if sort_order == 'DESC' %}
+                  {{ caret_up_svg | safe }}
+                  {% else %}
+                  {{ caret_down_svg | safe }}
+                  {% endif %}
+                  {% endif %}
+                </a>
+              </th>
+              <th scope="col">
+                <a href="{% url 'ListAngajat' %}?sort_by=nume&sort_order={{ new_sort_order }}" class="text-decoration-none text-white">
+                  nume
+                  {% if sort_by == 'nume' %}
+                  {% if sort_order == 'DESC' %}
+                  {{ caret_up_svg | safe }}
+                  {% else %}
+                  {{ caret_down_svg | safe }}
+                  {% endif %}
+                  {% endif %}
+                </a>
+              </th>
+              <th scope="col">
+                <a href="{% url 'ListAngajat' %}?sort_by=prenume&sort_order={{ new_sort_order }}" class="text-decoration-none text-white">
+                  prenume
+                  {% if sort_by == 'prenume' %}
+                  {% if sort_order == 'DESC' %}
+                  {{ caret_up_svg | safe }}
+                  {% else %}
+                  {{ caret_down_svg | safe }}
+                  {% endif %}
+                  {% endif %}
+                </a>
+              </th>
+              <th scope="col">
+                <a href="{% url 'ListAngajat' %}?sort_by=job&sort_order={{ new_sort_order }}" class="text-decoration-none text-white">
+                  job
+                  {% if sort_by == 'job' %}
+                  {% if sort_order == 'DESC' %}
+                  {{ caret_up_svg | safe }}
+                  {% else %}
+                  {{ caret_down_svg | safe }}
+                  {% endif %}
+                  {% endif %}
+                </a>
+              </th>
+              <th scope="col">nr_telefon</th>
+              <th scope="col">email</th>
+              <th scope="col" colspan="2">
+                <div class="d-inline-block" style="margin-left:10%;">
+                  <a class="btn btn-primary btn-sm" href="{% url 'addAngajat' %}">Add Angajat</a>
+                </div>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for angajat in angajati %}
+            <tr>
+              <td>
+                {{ angajat.id_angajat }}
+              </td>
+              <td>
+                {{ angajat.nume }}
+              </td>
+              <td>
+                {{ angajat.prenume }}
+              </td>
+              <td>
+                {{ angajat.job }}
+              </td>
+              <td>
+                {{ angajat.nr_telefon }}
+              </td>
+              <td>
+                {{ angajat.email }}
+              </td>
+              <td><a class="btn btn-success btn-sm" href='updateAngajat/{{ angajat.id_angajat }}'>Edit</a></td>
+              <td><a class="btn btn-danger btn-sm" href='deleteAngajat/{{ angajat.id_angajat }}'>Delete</a></td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  {% load pagination_tags %}
+
+  {% render_pagination angajati request %}
+
 </body>
+<script>
+  $(document).ready(function() {
+    $("#searchInput").on("input", function() {
+      performSearch();
+    });
+
+
+    function performSearch() {
+      var searchQuery = $("#searchInput").val();
+      if ($("#searchButton").text().trim() == "Select column") {
+        var searchColumn = "prenume";
+      } else {
+        var searchColumn = $("#searchButton").text().trim();
+      }
+
+      $.ajax({
+        type: "GET",
+        url: "/angajat/",
+        data: {
+          search_query: searchQuery,
+          sort_by: "{{ sort_by }}",
+          sort_order: "{{ sort_order }}",
+          search_column: searchColumn,
+        },
+        success: function(data) {
+          $(".table").html($(data).find(".table").html());
+        },
+        error: function(error) {
+          console.log(error);
+        },
+      });
+    }
+  });
+</script>

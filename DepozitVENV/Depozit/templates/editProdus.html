@@ -8,58 +8,67 @@
 
 <body>
   {% include 'fragments/navbar.html' %}
-  <h2>Detalii noi Produs</h2>
+  <br>
+  <div class="container d-flex justify-content-center">
+    <div class="card text-white bg-primary mb-3" style="width: 30rem;">
+      <div class="card-header">Detalii noi Produs</div>
+      <div class="card-body">
+        <form action="" method="POST">
+          {% csrf_token %}
+          <div class="mb-3">
+            <label for="id_firma" class="form-label">id_firma</label>
+            <select name="id_firma" id="id_firma" class="form-control">
+              {% for firma in firme %}
+              {% if firma.id_firma == produs.id_firma %}
+              <option value="{{ firma.id_firma }}" selected>
+                {{ firma.nume }}
+              </option>
+              {% else %}
+              <option value="{{ firma.id_firma }}">
+                {{ firma.nume }}
+              </option>
+              {% endif %}
+              {% endfor %}
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="nume_produs" class="form-label">nume_produs</label>
+            <input type="text" class="form-control" name="nume_produs" id="nume_produs" value="{{nume_produs}}">
+          </div>
+          <div class="mb-3">
+            <label for="nr_paleti" class="form-label">nr_paleti</label>
+            <input type="text" class="form-control" name="nr_paleti" id="nr_paleti" value="{{nr_paleti}}">
+          </div>
+          <div class="mb-3">
+            <label for="produse_per_palet" class="form-label">produse_per_palet</label>
+            <input type="text" class="form-control" name="produse_per_palet" id="produse_per_palet" value="{{produse_per_palet}}">
+          </div>
+          <div class="mb-3">
+            <label for="tip_produs" class="form-label">tip_produs</label>
+            <select name="tip_produs" id="tip_produs" class="form-control">
+              {% for op in opt %}
+              {% if op == tip_produs %}
+              <option value="{{ op }}" selected>
+                {{ op }}
+              </option>
+              {% else %}
+              <option value="{{ op }}">
+                {{ op }}
+              </option>
+              {% endif %}
+              {% endfor %}
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="pret_produs" class="form-label">pret_produs</label>
+            <input type="text" class="form-control" name="pret_produs" id="pret_produs" value="{{pret_produs}}">
+          </div>
+          <button type="submit" class="btn btn-success">Submit</button>
+          &nbsp;
+          <a href="/produs" class="btn btn-secondary">Cancel</a>
+        </form>
+      </div>
+    </div>
+  </div>
 
-  <form action="" method="POST">{% csrf_token %}
-    <div class="form-group row">
-      <label for="id_firma">id_firma</label>
-      <select name="id_firma" id="id_firma" class="form-control">
-        {% for firma in firme %}
-        {% if firma.id_firma == produs.id_firma %}
-        <option value="{{ firma.id_firma }}" selected>
-          {{ firma.nume }}
-        </option>
-        {% else %}
-        <option value="{{ firma.id_firma }}">
-          {{ firma.nume }}
-        </option>
-        {% endif %}
-        {% endfor %}
-      </select>
-    </div>
-    <div class="form-group row">
-      <label for="nume_produs">nume_produs</label>
-      <input type="text" class="form-control" name="nume_produs" id="nume_produs" value="{{nume_produs}}">
-    </div>
-    <div class="form-group row">
-      <label for="nr_paleti">nr_paleti</label>
-      <input type="text" class="form-control" name="nr_paleti" id="nr_paleti" value="{{nr_paleti}}">
-    </div>
-    <div class="form-group row">
-      <label for="produse_per_palet">produse_per_palet</label>
-      <input type="text" class="form-control" name="produse_per_palet" id="produse_per_palet" value="{{produse_per_palet}}">
-    </div>
-    <div class="form-group row">
-      <label for="tip_produs">tip_produs</label>
-      <select name="tip_produs" id="tip_produs" class="form-control">
-        {% for op in opt %}
-        {% if op == tip_produs %}
-        <option value="{{ op }}" selected>
-          {{ op }}
-        </option>
-        {% else %}
-        <option value="{{ op }}">
-          {{ op }}
-        </option>
-        {% endif %}>
-        {% endfor %}
-      </select>
-    </div>
-    <div class="form-group row">
-      <label for="pret_produs">pret_produs</label>
-      <input type="text" class="form-control" name="pret_produs" id="pret_produs" value="{{pret_produs}}">
-    </div>
-    <button type="btnAdd" class="btn btn-primary">Submit</button>
-    <a href="/produs" class="btn btn-primary">Cancel</a>
-  </form>
 </body>

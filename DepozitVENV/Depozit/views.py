@@ -1,5 +1,5 @@
 from django.http import JsonResponse
-from django.template.loader import render_to_string
+from django.template.loader import get_template
 from django.shortcuts import render, redirect
 from django.apps import apps
 from django.core.paginator import Paginator
@@ -44,7 +44,9 @@ def TirList(request):
     sort_order = request.GET.get('sort_order', 'asc')
     page_number = request.GET.get('page', 1)
     search_query = request.GET.get('search_query', '')
-    search_column = request.GET.get('search_column', 'nr_inmatriculare') 
+    search_column = request.GET.get('search_column', 'nr_inmatriculare')
+    caret_down_svg = get_template('svg/caret-down-fill.svg').render()
+    caret_up_svg = get_template('svg/caret-up-fill.svg').render() 
 
     if sort_order == 'ASC':
         new_sort_order = 'DESC'
@@ -82,7 +84,9 @@ def TirList(request):
             'search_columns': search_columns,
             'search_query': search_query,
             'search_column': search_column,
-            'new_sort_order': new_sort_order
+            'new_sort_order': new_sort_order,
+            'caret_down_svg': caret_down_svg,
+            'caret_up_svg': caret_up_svg
         })
 
 def addTir(request):
@@ -145,16 +149,44 @@ def deleteTir(request, id_tir):
 
 ############################################################################################
 def JobList(request):
-    jobs = []
+    sort_by = request.GET.get('sort_by', 'id_job')
+    sort_order = request.GET.get('sort_order', 'ASC')
+    page_number = request.GET.get('page', 1)
+    search_query = request.GET.get('search_query', '')
+    search_column = request.GET.get('search_column', 'denumire')
+    caret_down_svg = get_template('svg/caret-down-fill.svg').render()
+    caret_up_svg = get_template('svg/caret-up-fill.svg').render()
+
+    if sort_order == 'ASC':
+        new_sort_order = 'DESC'
+    else:
+        new_sort_order = 'ASC'
+
     conn = connection()
     cursor = conn.cursor()
-    sort_by = request.GET.get('sort_by', 'id_job')
-    sort_order = request.GET.get('sort_order', 'asc')
-    cursor.execute("SELECT * FROM Job ORDER BY %s %s" % (sort_by, sort_order))
+    search_sql = f"SELECT * FROM Job WHERE LOWER({search_column}) LIKE LOWER(:search_query) ORDER BY {sort_by} {sort_order}"
+    cursor.execute(search_sql, {'search_query': f'%{search_query.lower()}%'})
+
+    jobs = []
     for row in cursor.fetchall():
         jobs.append({"id_job": row[0], "denumire": row[1], "salariu": row[2]})
+
+    paginator = Paginator(jobs, PER_PAGE)
+    page_obj = paginator.get_page(page_number)
     conn.close()
-    return render(request, 'JobList.html', {'jobs': jobs})
+    search_columns =["id_job", "denumire", "salariu"]
+
+    return render(request, 'JobList.html', {
+            'jobs': page_obj,
+            'sort_order': sort_order,
+            'sort_by': sort_by,
+            'search_columns': search_columns,
+            'search_query': search_query,
+            'search_column': search_column,
+            'new_sort_order': new_sort_order,
+            'caret_down_svg': caret_down_svg,
+            'caret_up_svg': caret_up_svg
+        })
 
 def addJob(request):
     if request.method == 'GET':
@@ -201,12 +233,18 @@ def updateJob(request, id_job):
 def deleteJob(request, id_job):
     conn=connection()
     if request.method == 'GET':
-        cursor= conn.cursor()
+        page_number = request.GET.get('page', 1)
+
+        cursor = conn.cursor()
         cursor.execute("SELECT * FROM Angajat WHERE job = :id_job", [id_job])
-        angajati =[]
+        angajati = []
         for row in cursor.fetchall():
             angajati.append({"id_angajat": row[0], "nume": row[1], "prenume": row[2], "job": row[3], "nr_telefon": row[4], "email": row[5]})
-        return render(request, 'WarningODCJob.html', {'id_job': id_job, 'angajati': angajati})
+        paginator = Paginator(angajati, PER_PAGE)
+        page_obj = paginator.get_page(page_number)
+        conn.close()
+
+        return render(request, 'WarningODCJob.html', {'id_job': id_job, 'angajati': page_obj})
     if request.method == 'POST':
         cursor = conn.cursor()
         cursor.execute("DELETE FROM Job WHERE id_job = :id_job", [id_job])
@@ -217,16 +255,47 @@ def deleteJob(request, id_job):
 ############################################################################################
 
 def ListAngajat(request):
-    angajati = []
-    conn = connection()
-    cursor = conn.cursor()
     sort_by = request.GET.get('sort_by', 'id_angajat')
     sort_order = request.GET.get('sort_order', 'asc')
-    cursor.execute("SELECT * FROM Angajat ORDER BY %s %s" % (sort_by, sort_order))
+    page_number = request.GET.get('page', 1)
+    search_query = request.GET.get('search_query', '')
+    search_column = request.GET.get('search_column', 'nume')
+    caret_down_svg = get_template('svg/caret-down-fill.svg').render()
+    caret_up_svg = get_template('svg/caret-up-fill.svg').render()
+    
+    if sort_order == 'ASC':
+        new_sort_order = 'DESC'
+    else:
+        new_sort_order = 'ASC'
+
+    conn = connection()
+    cursor = conn.cursor()
+
+    search_sql = f"SELECT * FROM Angajat WHERE LOWER({search_column}) LIKE LOWER(:search_query) ORDER BY {sort_by} {sort_order}"
+    cursor.execute(search_sql, {'search_query': f'%{search_query.lower()}%'})
+
+    angajati = []
     for row in cursor.fetchall():
         angajati.append({"id_angajat": row[0], "nume": row[1], "prenume": row[2], "job": row[3], "nr_telefon": row[4], "email": row[5]})
+
+    paginator = Paginator(angajati, PER_PAGE)
+    page_obj = paginator.get_page(page_number)
+
     conn.close()
-    return render(request, 'ListAngajat.html', {'angajati': angajati})
+
+    search_columns =["id_angajat", "nume", "prenume", "job", "nr_telefon", "email"]
+
+    return render(request, 'ListAngajat.html', {
+            'angajati': page_obj,
+            'sort_order': sort_order,
+            'sort_by': sort_by,
+            'search_columns': search_columns,
+            'search_query': search_query,
+            'search_column': search_column,
+            'new_sort_order': new_sort_order,
+            'caret_down_svg': caret_down_svg,
+            'caret_up_svg': caret_up_svg
+        })
 
 def addAngajat(request):
     if request.method == 'GET':
@@ -316,15 +385,47 @@ def ListTura(request):
 ############################################################################################
 
 def ListPoarta(request):
-    porti = []
+    sort_by = request.GET.get('sort_by', 'id_poarta')
+    sort_order = request.GET.get('sort_order', 'asc')
+    page_number = request.GET.get('page', 1)
+    search_query = request.GET.get('search_query', '')
+    search_column = request.GET.get('search_column', 'stare_poarta')
+    caret_down_svg = get_template('svg/caret-down-fill.svg').render()
+    caret_up_svg = get_template('svg/caret-up-fill.svg').render()
+
+    if sort_order == 'ASC':
+        new_sort_order = 'DESC'
+    else:
+        new_sort_order = 'ASC'
+    
     conn = connection()
     cursor = conn.cursor()
-    sort_order = request.GET.get('sort_order', 'asc')
-    cursor.execute("SELECT * FROM Poarta ORDER BY id_poarta %s" % sort_order)
+
+    search_sql = f"SELECT * FROM Poarta WHERE LOWER({search_column}) LIKE LOWER(:search_query) ORDER BY {sort_by} {sort_order}"
+    cursor.execute(search_sql, {'search_query': f'%{search_query.lower()}%'})
+
+    porti = []
     for row in cursor.fetchall():
-        porti.append({"id_poarta": row[0],"stare_poarta": row[1]})
+        porti.append({"id_poarta": row[0], "stare_poarta": row[1]})
+    
+    paginator = Paginator(porti, PER_PAGE)
+    page_obj = paginator.get_page(page_number)
+
     conn.close()
-    return render(request, 'ListPoarta.html', {'porti': porti})
+
+    search_columns =["id_poarta", "stare_poarta"]
+
+    return render(request, 'ListPoarta.html', {
+            'porti': page_obj,
+            'sort_order': sort_order,
+            'sort_by': sort_by,
+            'search_columns': search_columns,
+            'search_query': search_query,
+            'search_column': search_column,
+            'new_sort_order': new_sort_order,
+            'caret_down_svg': caret_down_svg,
+            'caret_up_svg': caret_up_svg
+        })
 
 def addPoarta(request):
     if request.method == 'GET':
@@ -381,21 +482,47 @@ def deletePoarta(request, id_poarta):
 ############################################################################################
 
 def ListComanda(request):
-    comenzi = []
-    conn = connection()
-    cursor = conn.cursor()
     sort_by = request.GET.get('sort_by', 'id_comanda')
     sort_order = request.GET.get('sort_order', 'asc')
-    cursor.execute("SELECT * FROM Comanda ORDER BY %s %s" % (sort_by, sort_order))
+    page_number = request.GET.get('page', 1)
+    search_query = request.GET.get('search_query', '')
+    search_column = request.GET.get('search_column', 'tip_comanda')
+    caret_down_svg = get_template('svg/caret-down-fill.svg').render()
+    caret_up_svg = get_template('svg/caret-up-fill.svg').render()
+
+    if sort_order == 'ASC':
+        new_sort_order = 'DESC'
+    else:
+        new_sort_order = 'ASC'
+
+    conn = connection()
+    cursor = conn.cursor()
+
+    search_sql = f"SELECT * FROM Comanda WHERE LOWER({search_column}) LIKE LOWER(:search_query) ORDER BY {sort_by} {sort_order}"
+    cursor.execute(search_sql, {'search_query': f'%{search_query.lower()}%'})
+
+    comenzi = []
     for row in cursor.fetchall():
-        comenzi.append({"id_comanda": row[0],"data_comanda": str(row[1]), "tip_comanda": row[2]})
+        comenzi.append({"id_comanda": row[0], "data_comanda": row[1], "tip_comanda": row[2]})
+
+    paginator = Paginator(comenzi, PER_PAGE)
+    page_obj = paginator.get_page(page_number)
+
     conn.close()
-    for alt in comenzi:
-        alt['data_comanda'] = alt['data_comanda'][:len(alt['data_comanda'])-9]
-        date_obj = datetime.datetime.strptime(alt['data_comanda'], '%Y-%m-%d')
-        alt['data_comanda'] = date_obj.strftime('%d-%b-%Y')
-    
-    return render(request, 'ListComanda.html', {'comenzi': comenzi})
+
+    search_columns =["id_comanda", "data_comanda", "tip_comanda"]
+
+    return render(request, 'ListComanda.html', {
+            'comenzi': page_obj,
+            'sort_order': sort_order,
+            'sort_by': sort_by,
+            'search_columns': search_columns,
+            'search_query': search_query,
+            'search_column': search_column,
+            'new_sort_order': new_sort_order,
+            'caret_down_svg': caret_down_svg,
+            'caret_up_svg': caret_up_svg
+        })
 
 def addComanda(request):
     if request.method == 'GET':
@@ -426,16 +553,47 @@ def deleteComanda(request, id_comanda):
 
 ############################################################################################
 def ListProdus(request):
-    produse = []
-    conn = connection()
-    cursor = conn.cursor()
     sort_by = request.GET.get('sort_by', 'id_produs')
     sort_order = request.GET.get('sort_order', 'asc')
-    cursor.execute("SELECT * FROM Produs_stoc ORDER BY %s %s" % (sort_by, sort_order))
+    page_number = request.GET.get('page', 1)
+    search_query = request.GET.get('search_query', '')
+    search_column = request.GET.get('search_column', 'nume_produs')
+    caret_down_svg = get_template('svg/caret-down-fill.svg').render()
+    caret_up_svg = get_template('svg/caret-up-fill.svg').render()
+
+    if sort_order == 'ASC':
+        new_sort_order = 'DESC'
+    else:
+        new_sort_order = 'ASC'
+
+    conn = connection()
+    cursor = conn.cursor()
+
+    search_sql = f"SELECT * FROM Produs_stoc WHERE LOWER({search_column}) LIKE LOWER(:search_query) ORDER BY {sort_by} {sort_order}"
+    cursor.execute(search_sql, {'search_query': f'%{search_query.lower()}%'})
+
+    produse = []
     for row in cursor.fetchall():
-        produse.append({"id_produs": row[0],"id_firma": row[1], "nume_produs": row[2], "nr_paleti": row[3], "produse_per_palet": row[4], "tip_produs": row[5], "pret_produs": row[6]})
+        produse.append({"id_produs": row[0], "id_firma": row[1], "nume_produs": row[2], "nr_paleti": row[3], "produse_per_palet": row[4], "tip_produs": row[5], "pret_produs": row[6]})
+
+    paginator = Paginator(produse, PER_PAGE)
+    page_obj = paginator.get_page(page_number)
+
     conn.close()
-    return render(request, 'ListProdus.html', {'produse_stoc': produse})
+
+    search_columns =["id_produs", "id_firma", "nume_produs", "nr_paleti", "produse_per_palet", "tip_produs", "pret_produs"]
+
+    return render(request, 'ListProdus.html', {
+            'produse_stoc': page_obj,
+            'sort_order': sort_order,
+            'sort_by': sort_by,
+            'search_columns': search_columns,
+            'search_query': search_query,
+            'search_column': search_column,
+            'new_sort_order': new_sort_order,
+            'caret_down_svg': caret_down_svg,
+            'caret_up_svg': caret_up_svg
+        })
 
 def addProdus(request):
     if request.method == 'GET':
@@ -517,26 +675,48 @@ def deleteProdus(request, id_produs):
         return redirect('ListProdus')
 
 #########################################################################################
-
 def ListFirma(request):
-    conn = connection()
-    cursor = conn.cursor()
     sort_by = request.GET.get('sort_by', 'id_firma')
     sort_order = request.GET.get('sort_order', 'asc')
-    cursor.execute("SELECT * FROM Firma ORDER BY %s %s" % (sort_by, sort_order))
-    firma = []
+    page_number = request.GET.get('page', 1)
+    search_query = request.GET.get('search_query', '')
+    search_column = request.GET.get('search_column', 'nume')
+    caret_down_svg = get_template('svg/caret-down-fill.svg').render()
+    caret_up_svg = get_template('svg/caret-up-fill.svg').render()
+
+    if sort_order == 'ASC':
+        new_sort_order = 'DESC'
+    else:
+        new_sort_order = 'ASC'
+
+    conn = connection()
+    cursor = conn.cursor()
+
+    search_sql = f"SELECT * FROM Firma WHERE LOWER({search_column}) LIKE LOWER(:search_query) ORDER BY {sort_by} {sort_order}"
+    cursor.execute(search_sql, {'search_query': f'%{search_query.lower()}%'})
+
+    firme = []
     for row in cursor.fetchall():
-        firma.append({"id_firma": row[0], "nume": row[1], "data_semnare_contract": str(row[2]), "data_incheiere_contract": str(row[3]), "email": row[4], "contact_telefon": row[5]})
+        firme.append({"id_firma": row[0], "nume": row[1], "data_semnare_contract": row[2], "data_incheiere_contract": row[3], "email": row[4], "contact_telefon": row[5]})
+    
+    paginator = Paginator(firme, PER_PAGE)
+    page_obj = paginator.get_page(page_number)
+
     conn.close()
-    for alt in firma:
-        alt['data_semnare_contract'] = alt['data_semnare_contract'][:len(alt['data_semnare_contract'])-9]
-        date_obj = datetime.datetime.strptime(alt['data_semnare_contract'], '%Y-%m-%d')
-        alt['data_semnare_contract'] = date_obj.strftime('%d-%b-%Y')
-        if alt['data_incheiere_contract'] != 'None':
-            alt['data_incheiere_contract'] = alt['data_incheiere_contract'][:len(alt['data_incheiere_contract'])-9]
-            date_obj = datetime.datetime.strptime(alt['data_incheiere_contract'], '%Y-%m-%d')
-            alt['data_incheiere_contract'] = date_obj.strftime('%d-%b-%Y')
-    return render(request, 'ListFirma.html', {'firme': firma})
+
+    search_columns =["id_firma", "nume", "data_semnare_contract", "data_incheiere_contract", "email", "contact_telefon"]
+
+    return render(request, 'ListFirma.html', {
+            'firme': page_obj,
+            'sort_order': sort_order,
+            'sort_by': sort_by,
+            'search_columns': search_columns,
+            'search_query': search_query,
+            'search_column': search_column,
+            'new_sort_order': new_sort_order,
+            'caret_down_svg': caret_down_svg,
+            'caret_up_svg': caret_up_svg
+        })
 
 def addFirma(request):
     if request.method == 'GET':
@@ -599,13 +779,26 @@ def deleteFirma(request, id_firma):
         return redirect('ListFirma')
 
 ############################################################################################################
-
 def ListALTL(request):
-    conn = connection()
-    cursor = conn.cursor()
     sort_by = request.GET.get('sort_by', 'id_poarta')
     sort_order = request.GET.get('sort_order', 'asc')
-    cursor.execute("SELECT * FROM Angajat_lucreaza_tura_la_poarta ORDER BY %s %s" % (sort_by, sort_order))
+    page_number = request.GET.get('page', 1)
+    search_query = request.GET.get('search_query', '')
+    search_column = request.GET.get('search_column', 'id_poarta')
+    caret_down_svg = get_template('svg/caret-down-fill.svg').render()
+    caret_up_svg = get_template('svg/caret-up-fill.svg').render()
+
+    if sort_order == 'ASC':
+        new_sort_order = 'DESC'
+    else:
+        new_sort_order = 'ASC'
+
+    conn = connection()
+    cursor = conn.cursor()
+
+    search_sql = f"SELECT * FROM Angajat_lucreaza_tura_la_poarta WHERE LOWER({search_column}) LIKE LOWER(:search_query) ORDER BY {sort_by} {sort_order}"
+    cursor.execute(search_sql, {'search_query': f'%{search_query.lower()}%'})
+
     altl = []
     for row in cursor.fetchall():
         altl.append({"id_poarta": row[0], "id_angajat": row[1], "id_tura": row[2], "data": str(row[3])})
@@ -613,8 +806,24 @@ def ListALTL(request):
         alt['data'] = alt['data'][:len(alt['data'])-9]
         date_obj = datetime.datetime.strptime(alt['data'], '%Y-%m-%d')
         alt['data'] = date_obj.strftime('%d-%b-%Y')
+    paginator = Paginator(altl, PER_PAGE)
+    page_obj = paginator.get_page(page_number)
+
     conn.close()
-    return render(request, 'ListALTL.html', {'ALTLs': altl})
+
+    search_columns =["id_poarta", "id_angajat", "id_tura", "data"]
+
+    return render(request, 'ListALTL.html', {
+            'ALTLs': page_obj,
+            'sort_order': sort_order,
+            'sort_by': sort_by,
+            'search_columns': search_columns,
+            'search_query': search_query,
+            'search_column': search_column,
+            'new_sort_order': new_sort_order,
+            'caret_down_svg': caret_down_svg,
+            'caret_up_svg': caret_up_svg
+        })
 
 def addALTL(request):
     if request.method == 'GET':
@@ -715,27 +924,53 @@ def deleteALTL(request,id_poarta, id_angajat, id_tura, data):
     return redirect('ListALTL')
 
 ############################################################################################################
-
 def ListProgram_tir(request):
-    conn = connection()
-    cursor = conn.cursor()
-    current_datetime = datetime.datetime.now()
-    formatted_datetime = current_datetime.strftime("%d-%b-%Y %H:%M:%S")
-    
     sort_by = request.GET.get('sort_by', 'id_tir')
     sort_order = request.GET.get('sort_order', 'asc')
-    cursor.execute("SELECT * FROM Program_tir ORDER BY %s %s" % (sort_by, sort_order))
+    page_number = request.GET.get('page', 1)
+    search_query = request.GET.get('search_query', '')
+    search_column = request.GET.get('search_column', 'id_tir')
+    caret_down_svg = get_template('svg/caret-down-fill.svg').render()
+    caret_up_svg = get_template('svg/caret-up-fill.svg').render()
+
+    if sort_order == 'ASC':
+        new_sort_order = 'DESC'
+    else:
+        new_sort_order = 'ASC'
+
+    conn = connection()
+    cursor = conn.cursor()
+
+    search_sql = f"SELECT * FROM Program_tir WHERE LOWER({search_column}) LIKE LOWER(:search_query) ORDER BY {sort_by} {sort_order}"
+    cursor.execute(search_sql, {'search_query': f'%{search_query.lower()}%'})
+
     program_tir = []
     for row in cursor.fetchall():
         program_tir.append({"id_tir": row[0], "id_poarta": row[1], "intrare": str(row[2]), "iesire": str(row[3])})
-    conn.close()
     for alt in program_tir:
         date_obj = datetime.datetime.strptime(alt['intrare'], '%Y-%m-%d  %H:%M:%S')
         alt['intrare'] = date_obj.strftime('%d-%b-%Y %H:%M:%S')
         if alt['iesire'] != 'None': 
             date_obj = datetime.datetime.strptime(alt['iesire'], '%Y-%m-%d  %H:%M:%S')
             alt['iesire'] = date_obj.strftime('%d-%b-%Y %H:%M:%S')
-    return render(request, 'ListProgram_tir.html', {'programs': program_tir, 'data_curr': formatted_datetime})
+    paginator = Paginator(program_tir, PER_PAGE)
+    page_obj = paginator.get_page(page_number)
+
+    conn.close()
+
+    search_columns =["id_tir", "id_poarta", "intrare", "iesire"]
+
+    return render(request, 'ListProgram_tir.html', {
+            'programs': page_obj,
+            'sort_order': sort_order,
+            'sort_by': sort_by,
+            'search_columns': search_columns,
+            'search_query': search_query,
+            'search_column': search_column,
+            'new_sort_order': new_sort_order,
+            'caret_down_svg': caret_down_svg,
+            'caret_up_svg': caret_up_svg
+        })
 
 def addProgram_tir(request):
     conn = connection()
@@ -828,26 +1063,57 @@ def deleteProgram_tir(request, id_tir, id_poarta,intrare):
     return redirect('ListProgram_tir')
 
 ######################################################################################################
-
 def ListTransport(request):
-    conn=connection()
-    cursor = conn.cursor()
     sort_by = request.GET.get('sort_by', 'id_tir')
     sort_order = request.GET.get('sort_order', 'asc')
-    cursor.execute("SELECT * FROM Transport ORDER BY %s %s" % (sort_by, sort_order))
-    Transporturi =[]
+    page_number = request.GET.get('page', 1)
+    search_query = request.GET.get('search_query', '')
+    search_column = request.GET.get('search_column', 'id_tir')
+    caret_down_svg = get_template('svg/caret-down-fill.svg').render()
+    caret_up_svg = get_template('svg/caret-up-fill.svg').render()
+
+    if sort_order == 'ASC':
+        new_sort_order = 'DESC'
+    else:
+        new_sort_order = 'ASC'
+
+    conn = connection()
+    cursor = conn.cursor()
+
+    search_sql = f"SELECT * FROM Transport WHERE LOWER({search_column}) LIKE LOWER(:search_query) ORDER BY {sort_by} {sort_order}"
+    cursor.execute(search_sql, {'search_query': f'%{search_query.lower()}%'})
+
+    transporturi = []
     for row in cursor.fetchall():
-        Transporturi.append({"id_tir": row[0], "id_comanda": row[1], "distanta":row[2]})
-    tiruri=[]
+        transporturi.append({"id_tir": row[0], "id_comanda": row[1], "distanta": row[2]})
     cursor.execute("SELECT id_tir from Tir")
+    tiruri=[]
     for row in cursor.fetchall():
         tiruri.append({"id_tir":row[0]})
-    comenzi=[]
     cursor.execute("SELECT id_comanda from Comanda")
+    comenzi=[]
     for row in cursor.fetchall():
         comenzi.append({"id_comanda":row[0]})
+    paginator = Paginator(transporturi, PER_PAGE)
+    page_obj = paginator.get_page(page_number)
+
     conn.close()
-    return render(request,'ListTransport.html', {'transporturi': Transporturi, 'tiruri':tiruri, 'comenzi':comenzi})
+
+    search_columns =["id_tir", "id_comanda", "distanta"]
+
+    return render(request, 'ListTransport.html', {
+            'transporturi': page_obj,
+            'sort_order': sort_order,
+            'sort_by': sort_by,
+            'search_columns': search_columns,
+            'search_query': search_query,
+            'search_column': search_column,
+            'new_sort_order': new_sort_order,
+            'caret_down_svg': caret_down_svg,
+            'caret_up_svg': caret_up_svg,
+            'tiruri':tiruri,
+            'comenzi':comenzi
+        })
 
 def addTransport(request):
     conn=connection()
@@ -930,24 +1196,57 @@ def deleteTransport(request, id_tir, id_comanda):
 #########################################################################################
 
 def ListProduse_comanda(request):
-    conn=connection()
-    cursor = conn.cursor()
     sort_by = request.GET.get('sort_by', 'id_produs')
     sort_order = request.GET.get('sort_order', 'asc')
-    cursor.execute("SELECT * FROM Produse_comanda ORDER BY %s %s" % (sort_by, sort_order))
-    prods_comanda =[]
+    page_number = request.GET.get('page', 1)
+    search_query = request.GET.get('search_query', '')
+    search_column = request.GET.get('search_column', 'id_produs')
+    caret_down_svg = get_template('svg/caret-down-fill.svg').render()
+    caret_up_svg = get_template('svg/caret-up-fill.svg').render()
+
+    if sort_order == 'ASC':
+        new_sort_order = 'DESC'
+    else:
+        new_sort_order = 'ASC'
+
+    conn = connection()
+    cursor = conn.cursor()
+
+    search_sql = f"SELECT * FROM Produse_comanda WHERE LOWER({search_column}) LIKE LOWER(:search_query) ORDER BY {sort_by} {sort_order}"
+    cursor.execute(search_sql, {'search_query': f'%{search_query.lower()}%'})
+
+    prods_comanda = []
     for row in cursor.fetchall():
         prods_comanda.append({"id_produs": row[0], "id_comanda": row[1], "nr_paleti": row[2]})
-    produse=[]
     cursor.execute("SELECT id_produs from Produs_stoc")
+    produse=[]
     for row in cursor.fetchall():
         produse.append({"id_produs":row[0]})
-    comenzi=[]
     cursor.execute("SELECT id_comanda from Comanda")
+    comenzi=[]
     for row in cursor.fetchall():
         comenzi.append({"id_comanda":row[0]})
+
+    paginator = Paginator(prods_comanda, PER_PAGE)
+    page_obj = paginator.get_page(page_number)
+
     conn.close()
-    return render(request,'ListProduse_comanda.html', {'prods_comanda': prods_comanda, 'produse':produse, 'comenzi':comenzi})
+
+    search_columns =["id_produs", "id_comanda", "nr_paleti"]
+
+    return render(request, 'ListProduse_comanda.html', {
+            'prods_comanda': page_obj,
+            'sort_order': sort_order,
+            'sort_by': sort_by,
+            'search_columns': search_columns,
+            'search_query': search_query,
+            'search_column': search_column,
+            'new_sort_order': new_sort_order,
+            'caret_down_svg': caret_down_svg,
+            'caret_up_svg': caret_up_svg,
+            'produse':produse,
+            'comenzi':comenzi
+        })
 
 def addProduse_comanda(request):
     conn=connection()

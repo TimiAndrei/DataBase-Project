@@ -8,35 +8,43 @@
 
 <body>
   {% include 'fragments/navbar.html' %}
-  <h2>Detalii Transport</h2>
+  <br><br>
+  <div class="container d-flex justify-content-center">
+    <div class="card text-white bg-primary mb-3" style="width: 30rem;">
+      <div class="card-header">Detalii Transport</div>
+      <div class="card-body">
+        <form action="" method="POST">
+          {% csrf_token %}
+          <div class="mb-3">
+            <label for="id_tir" class="form-label">id_tir</label>
+            <select name="id_tir" id="id_tir" class="form-control">
+              {% for tir in tiruri %}
+              <option value="{{ tir.id_tir }}">
+                {{ tir.id_tir }}
+              </option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="id_comanda" class="form-label">id_comanda</label>
+            <select name="id_comanda" id="id_comanda" class="form-control">
+              {% for comanda in comenzi %}
+              <option value="{{ comanda.id_comanda }}">
+                {{ comanda.id_comanda }}
+              </option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="distanta" class="form-label">distanta</label>
+            <input type="text" class="form-control" name="distanta" id="distanta">
+          </div>
+          <button type="submit" class="btn btn-success">Submit</button>
+          &nbsp;
+          <a href="/Transport" class="btn btn-secondary">Cancel</a>
+        </form>
+      </div>
+    </div>
+  </div>
 
-  <form action="" method="POST">{% csrf_token %}
-
-    <div class="form-group row">
-      <label for="id_tir">id_tir</label>
-      <select name="id_tir" id="id_tir" class="form-control">
-        {% for tir in tiruri %}
-        <option value="{{ tir.id_tir }}">
-          {{ tir.id_tir }}
-        </option>
-        {% endfor %}
-      </select>
-    </div>
-    <div class="form-group row">
-      <label for="id_comanda">id_comanda</label>
-      <select name="id_comanda" id="id_comanda" class="form-control">
-        {% for comanda in comenzi %}
-        <option value="{{ comanda.id_comanda }}">
-          {{ comanda.id_comanda }}
-        </option>
-        {% endfor %}
-      </select>
-    </div>
-    <div class="form-group row">
-      <label for="distanta">distanta</label>
-      <input type="text" class="form-control" name="distanta" id="distanta">
-    </div>
-    <button type="btnAdd" class="btn btn-primary">Submit</button>
-    <a href="/Transport" class="btn btn-primary">Cancel</a>
-  </form>
 </body>

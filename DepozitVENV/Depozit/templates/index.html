@@ -1,3 +1,4 @@
+{% load static %}
 <!doctype html>
 <html>
 
@@ -10,14 +11,14 @@
   {% include 'fragments/navbar.html' %}
   <div style="text-align: center;">
 
-    <br><br>
     &nbsp;&nbsp;&nbsp;
     <h2>Warehouse Management - Database Project</h2>
     <br>
     <div class="container" style="width:60%;">
-      <p>Acest proiect faciliteaza interacțiunea cu baza de date aducând posibilități de căutare rapidă după fiecare coloană, sortare rapidă, cât și editarea, adăugarea și ștergerea datelor este făcută facilă prin intermediul interfeței.</p>
-      <br>
-      <p>Tabelele se pot selecta prin butoanele din bara de navigație, iar odată selectată o tabelă, se va putea folosi și funcția de căutare din dreapta bării de navigație.</p>
+      <p>This project facilitates interaction with the database by providing quick search capabilities for each column, rapid sorting, as well as easy editing, adding, and deleting of data through the interface.</p>
+      <p>This is how the conceptual diagram for the database looks like:</p>
+      <img src="{% static 'Conceptual Diagram.png' %}" alt="Database Schema" style="width:100%;">
+      <br><br>
     </div>
 
     <div style="text-align: center;">

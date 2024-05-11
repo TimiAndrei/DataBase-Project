@@ -1,72 +1,73 @@
 <!-- navbar.html -->
 {% with current_view=request.resolver_match.url_name %}
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+<link rel="stylesheet" href="https://bootswatch.com/5/darkly/bootstrap.min.css">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.2.4/js/bootstrap.min.js"></script>
 <nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
   <div class="container-fluid">
-    <a class="navbar-brand" href="#">DBWebApp</a>
+    <a class="navbar-brand {% if current_view == 'index' %}active{% endif %}" href="{% url 'index' %}">DbWebApp</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarColor01">
       <ul class="navbar-nav me-auto">
         <li class="nav-item">
-          <a class="nav-link {% if current_view == 'index' %}active{% endif %}" href="{% url 'index' %}">Index</a>
+          <a class="nav-link {% if current_view == 'TirList' %}active{% endif %}" href="{% url 'TirList' %}?sort_by=id_tir&sort_order=ASC">Tir</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link {% if current_view == 'TirList' %}active{% endif %}" href="{% url 'TirList' %}">Tir</a>
+          <a class="nav-link {% if current_view == 'JobList' %}active{% endif %}" href="{% url 'JobList' %}?sort_by=id_job&sort_order=ASC">Job</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link {% if current_view == 'JobList' %}active{% endif %}" href="{% url 'JobList' %}">Job</a>
+          <a class="nav-link {% if current_view == 'ListAngajat' %}active{% endif %}" href="{% url 'ListAngajat' %}?sort_by=id_angajat&sort_order=ASC">Angajat</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link {% if current_view == 'ListAngajat' %}active{% endif %}" href="{% url 'ListAngajat' %}">Angajat</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link {% if current_view == 'ListTura' %}active{% endif %}" href="{% url 'ListTura' %}">Tura</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link {% if current_view == 'ListPoarta' %}active{% endif %}" href="{% url 'ListPoarta' %}">Poarta</a>
+          <a class="nav-link {% if current_view == 'ListPoarta' %}active{% endif %}" href="{% url 'ListPoarta' %}?sort_by=id_poarta&sort_order=ASC">Poarta</a>
 
         </li>
         <li class="nav-item">
-          <a class="nav-link {% if current_view == 'ListComanda' %}active{% endif %}" href="{% url 'ListComanda' %}">Comanda</a>
+          <a class="nav-link {% if current_view == 'ListComanda' %}active{% endif %}" href="{% url 'ListComanda' %}?sort_by=id_comanda&sort_order=ASC">Comanda</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link {% if current_view == 'ListProdus' %}active{% endif %}" href="{% url 'ListProdus' %}">Produs_stoc</a>
+          <a class="nav-link {% if current_view == 'ListProdus' %}active{% endif %}" href="{% url 'ListProdus' %}?sort_by=id_produs&sort_order=ASC">Produs_stoc</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link {% if current_view == 'ListFirma' %}active{% endif %}" href="{% url 'ListFirma' %}">Firma</a>
+          <a class="nav-link {% if current_view == 'ListFirma' %}active{% endif %}" href="{% url 'ListFirma' %}?sort_by=id_firma&sort_order=ASC">Firma</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link {% if current_view == 'ListALTL' %}active{% endif %}" href="{% url 'ListALTL' %}">Angajat_lucreaza</a>
+          <a class="nav-link {% if current_view == 'ListALTL' %}active{% endif %}" href="{% url 'ListALTL' %}?sort_by=data&sort_order=DESC">Angajat_lucreaza</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link {% if current_view == 'ListProgram_tir' %}active{% endif %}" href="{% url 'ListProgram_tir' %}">Program_tir</a>
+          <a class="nav-link {% if current_view == 'ListProgram_tir' %}active{% endif %}" href="{% url 'ListProgram_tir' %}?sort_by=iesire&sort_order=DESC">Program_tir</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link {% if current_view == 'ListTransport' %}active{% endif %}" href="{% url 'ListTransport' %}">Transport</a>
+          <a class="nav-link {% if current_view == 'ListTransport' %}active{% endif %}" href="{% url 'ListTransport' %}?sort_by=distanta&sort_order=DESC">Transport</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link {% if current_view == 'ListProduse_comanda' %}active{% endif %}" href="{% url 'ListProduse_comanda' %}">Produse_comanda</a>
+          <a class="nav-link {% if current_view == 'ListProduse_comanda' %}active{% endif %}" href="{% url 'ListProduse_comanda' %}?sort_by=nr_paleti&sort_order=DESC">Produse_comanda</a>
         </li>
       </ul>
-
-      <form class="d-flex ml-2" id="searchForm">
-        <input class="form-control me-sm-2" type="search" placeholder="Search by..." id="searchInput" style="width:10vw;">
-      </form>
-      <div class="dropdown">
-        <button class="btn btn-secondary dropdown-toggle" type="button" id="searchButton" data-bs-toggle="dropdown" aria-expanded="false" style="width:12vw;">
-          Select column
-        </button>
-        <ul class="dropdown-menu" aria-labelledby="searchButton">
-          {% for column in search_columns %}
-          <li><a class="dropdown-item" href="#" data-value="{{ column }}">
-              {{ column }}</a></li>
-          {% endfor %}
-        </ul>
+      &nbsp;&nbsp;
+      <div class="d-flex" style="margin-right:5%;">
+        <form class="d-flex ml-2" id="searchForm">
+          <input class="form-control me-sm-2" type="search" placeholder="Search by..." id="searchInput" style="width:16vw;">
+        </form>
+        <div class="dropdown">
+          <button class="btn btn-secondary dropdown-toggle" type="button" id="searchButton" data-bs-toggle="dropdown" aria-expanded="false" style="width:12vw;">
+            Select column
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="searchButton">
+            {% for column in search_columns %}
+            <li><a class="dropdown-item" href="#" data-value="{{ column }}">
+                {{ column }}</a></li>
+            {% endfor %}
+          </ul>
+        </div>
       </div>
 
       <script>
-        // Update dropdown toggle button text when an option is selected
         document.querySelectorAll('.dropdown-item').forEach(item => {
           item.addEventListener('click', function() {
             document.getElementById('searchButton').innerText = this.innerText;

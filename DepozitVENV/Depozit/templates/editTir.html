@@ -8,30 +8,40 @@
 
 <body>
   {% include 'fragments/navbar.html' %}
-  <h2>Detalii noi Tir</h2>
-
-  <form action="" method="POST">{% csrf_token %}
-    <div class="form-group row">
-      <label for="id_tir">id_tir</label>
-      <input type="text" class="form-control" name="id_tir" id="id_tir" value="{{id_tir}}">
+  <br><br>
+  <div class="container d-flex justify-content-center">
+    <div class="card text-white bg-primary mb-3" style="width: 30rem;">
+      <div class="card-header">Detalii noi Tir</div>
+      <div class="card-body">
+        <form action="" method="POST">
+          {% csrf_token %}
+          <div class="mb-3">
+            <label for="id_tir" class="form-label">id_tir</label>
+            <input type="text" class="form-control" id="id_tir" name="id_tir" value="{{id_tir}}">
+          </div>
+          <div class="mb-3">
+            <label for="nr_inmatriculare" class="form-label">nr_inmatriculare</label>
+            <input type="text" class="form-control" id="nr_inmatriculare" name="nr_inmatriculare" value="{{nr_inmatriculare}}">
+          </div>
+          <div class="mb-3">
+            <label for="nume_sofer" class="form-label">nume_sofer</label>
+            <input type="text" class="form-control" id="nume_sofer" name="nume_sofer" value="{{nume_sofer}}">
+          </div>
+          <div class="mb-3">
+            <label for="prenume_sofer" class="form-label">prenume_sofer</label>
+            <input type="text" class="form-control" id="prenume_sofer" name="prenume_sofer" value="{{prenume_sofer}}">
+          </div>
+          <div class="mb-3">
+            <label for="telefon_sofer" class="form-label">telefon_sofer</label>
+            <input type="text" class="form-control" id="telefon_sofer" name="telefon_sofer" value="{{telefon_sofer}}">
+          </div>
+          <button type="submit" class="btn btn-success">Submit</button>
+          &nbsp;
+          <a href="/tir" class="btn btn-secondary">Cancel</a>
+        </form>
+      </div>
     </div>
-    <div class="form-group row">
-      <label for="nr_inmatriculare">nr_inmatriculare</label>
-      <input type="text" class="form-control" name="nr_inmatriculare" id="nr_inmatriculare" value="{{nr_inmatriculare}}">
-    </div>
-    <div class="form-group row">
-      <label for="nume_sofer">nume_sofer</label>
-      <input type="text" class="form-control" name="nume_sofer" id="nume_sofer" value="{{nume_sofer}}">
-    </div>
-    <div class="form-group row">
-      <label for="prenume_sofer">prenume_sofer</label>
-      <input type="text" class="form-control" name="prenume_sofer" id="prenume_sofer" value="{{prenume_sofer}}">
-    </div>
-    <div class="form-group row">
-      <label for="telefon_sofer">telefon_sofer</label>
-      <input type="text" class="form-control" name="telefon_sofer" id="telefon_sofer" value="{{telefon_sofer}}">
-    </div>
-    <button type="btnAdd" class="btn btn-primary">Submit</button>
-    <a href="/tir" class="btn btn-primary">Cancel</a>
-  </form>
+  </div>
 </body>
+
+</html>
