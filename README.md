@@ -26,5 +26,7 @@ The web interface has been refactored to implement a new design that is more use
 The landing page describes briefly the purpose of the app and shows the conceptual diagram for the database.
 ![Landing Page](https://github.com/TimiAndrei/DataBase-Project/blob/3f3a400fe56f407a0f71c07f7f8e18d749d3b22f/Preview/NewLandingPage.png)
 
-After clicking one of the navbar buttons you will be redirected to the specific table page that looks like this:
-![Table View](https://github.com/TimiAndrei/DataBase-Project/blob/7c5a973e9428d79271ce71522227209482165799/Preview/TableView.png)
+After clicking on a navbar button, the user is redirected to the specific table page where all CRUD operations can be performed as well as sorting and searching for specific records.
+
+Each table page will look something like this:
+![Table View](https://github.com/TimiAndrei/DataBase-Project/blob/3f3a400fe56f407a0f71c07f7f8e18d749d3b22f/Preview/NewTableView.png)
