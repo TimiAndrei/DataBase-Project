@@ -1,7 +1,4 @@
 --------------------------------------------------------
---  File created - Thursday-January-12-2023   
---------------------------------------------------------
---------------------------------------------------------
 --  DDL for Table ANGAJAT
 --------------------------------------------------------
 
@@ -686,7 +683,7 @@ BEFORE UPDATE
 ON Comanda
 FOR EACH ROW
 BEGIN 
-    RAISE_APPLICATION_ERROR(-20001,'Nu se pot modifica/?terge valori din comanda, faceti alta comanda');
+    RAISE_APPLICATION_ERROR(-20001,'Nu se pot modifica/sterge valori din comanda, faceti alta comanda');
 END;
 /
 ALTER TRIGGER "TIMI"."NOT_UPDATE_COMANDA" ENABLE;
@@ -699,7 +696,7 @@ BEFORE UPDATE
 ON Produse_comanda
 FOR EACH ROW
 BEGIN 
-    RAISE_APPLICATION_ERROR(-20002,'Nu se pot modifica/?terge valori din produse_comanda, faceti alta comanda');
+    RAISE_APPLICATION_ERROR(-20002,'Nu se pot modifica/sterge valori din produse_comanda, faceti alta comanda');
 END;
 /
 ALTER TRIGGER "TIMI"."NOT_UPDATE_PRODUSE_COMANDA" ENABLE;
@@ -712,7 +709,7 @@ BEFORE INSERT OR UPDATE OR DELETE
 ON TURA
 FOR EACH ROW
 BEGIN 
-    RAISE_APPLICATION_ERROR(-20003,'Nu se pot modifica/adauga/?terge valorile din tabelul TURA');	
+    RAISE_APPLICATION_ERROR(-20003,'Nu se pot modifica/adauga/sterge valorile din tabelul TURA');	
 END;
 /
 ALTER TRIGGER "TIMI"."NOT_UPDATE_TURA" ENABLE;
